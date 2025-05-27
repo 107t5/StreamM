@@ -42,7 +42,7 @@ public class SchedulesDirectHttpService : ISchedulesDirectHttpService, IDisposab
         _apiErrorManager = apiErrorManager ?? throw new ArgumentNullException(nameof(apiErrorManager));
     }
 
-    public async Task<T?> SendRequestAsync<T>(APIMethod method, string endpoint, object? payload = null, CancellationToken cancellationToken = default)
+    public async Task<T?> SendRequestAsync<T>(APIMethod method, string endpoint, object? payload = null, CancellationToken cancellationToken = default, bool authenticationRequired = false)
     {
         if (_disposed)
         {
@@ -85,7 +85,7 @@ public class SchedulesDirectHttpService : ISchedulesDirectHttpService, IDisposab
                     "application/json");
             }
 
-            using var httpClient = GetHttpClient();
+            using var httpClient = GetHttpClient(authenticationRequired);
             using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, cancellationToken);
 
@@ -115,7 +115,7 @@ public class SchedulesDirectHttpService : ISchedulesDirectHttpService, IDisposab
         }
     }
 
-    public async Task<HttpResponseMessage> SendRawRequestAsync(HttpRequestMessage request, CancellationToken cancellationToken = default)
+    public async Task<HttpResponseMessage> SendRawRequestAsync(HttpRequestMessage request, CancellationToken cancellationToken = default, bool authenticationRequired = false)
     {
         if (_disposed)
         {
@@ -148,7 +148,7 @@ public class SchedulesDirectHttpService : ISchedulesDirectHttpService, IDisposab
 
         try
         {
-            using var httpClient = GetHttpClient();
+            using var httpClient = GetHttpClient(authenticationRequired);
             var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, cancellationToken);
 
@@ -247,6 +247,13 @@ public class SchedulesDirectHttpService : ISchedulesDirectHttpService, IDisposab
                         break;
 
                     case SDHttpResponseCode.TOKEN_MISSING:
+                        // In case of a request being made where no token is added, ensure we don't block ourselves.
+                        _apiErrorManager.SetCooldown(sdCode, SMDT.UtcNow.AddMinutes(10), "A request was made to SchedulesDirect without a token.");
+                        response.StatusCode = HttpStatusCode.Unauthorized;
+                        response.ReasonPhrase = "Unauthorized";
+                        ClearToken();
+                        break;
+
                     case SDHttpResponseCode.TOKEN_INVALID:
                     case SDHttpResponseCode.INVALID_USER:
                     case SDHttpResponseCode.TOKEN_EXPIRED:
@@ -338,7 +345,8 @@ public class SchedulesDirectHttpService : ISchedulesDirectHttpService, IDisposab
             }
             ClearToken();
 
-            using var httpClient = GetHttpClient();
+            // We are perfoming an authentication request, so authentication isn't required
+            using var httpClient = GetHttpClient(authenticationRequired: false);
             using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(timeoutCts.Token, cancellationToken);
 
@@ -438,11 +446,16 @@ public class SchedulesDirectHttpService : ISchedulesDirectHttpService, IDisposab
         _logger.LogWarning("Token cleared.");
     }
 
-    private HttpClient GetHttpClient()
+    private HttpClient GetHttpClient(bool authenticationRequired)
     {
         if (_disposed)
         {
             throw new ObjectDisposedException(nameof(SchedulesDirectHttpService));
+        }
+
+        if (authenticationRequired && string.IsNullOrEmpty(Token))
+        {
+            throw new UnauthorizedAccessException("Auth token is found as empty, but caller expects authentication to be made.");
         }
 
         var httpClient = _httpClientFactory.CreateClient(nameof(SchedulesDirectHttpService));
