@@ -21,8 +21,10 @@ public static class ConfigureServices
             AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
             AllowAutoRedirect = true,
         })
+        .AddHttpMessageHandler<TokenPreservingHandler>();
 
         return services
+            .AddTransient<TokenPreservingHandler>()
             .AddSingleton<ISchedulesDirectAPIService, SchedulesDirectAPIService>()
             .AddSingleton<ISchedulesDirectRepository, SchedulesDirectRepository>()
             .AddSingleton<IApiErrorManager, ApiErrorManager>()
