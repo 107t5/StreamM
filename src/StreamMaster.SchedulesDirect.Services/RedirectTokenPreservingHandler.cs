@@ -2,11 +2,11 @@
 
 namespace StreamMaster.SchedulesDirect.Services
 {
-    public class TokenPreservingHandler : DelegatingHandler
+    public class RedirectTokenPreservingHandler : DelegatingHandler
     {
-        private readonly ILogger<TokenPreservingHandler> _logger;
+        private readonly ILogger<RedirectTokenPreservingHandler> _logger;
 
-        public TokenPreservingHandler(ILogger<TokenPreservingHandler> logger)
+        public RedirectTokenPreservingHandler(ILogger<RedirectTokenPreservingHandler> logger)
         {
             _logger = logger;
         }
