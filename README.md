@@ -1,3 +1,13 @@
+> [!WARNING]
+>
+> **This fork is not actively maintained.**
+> 
+> - This fork exists solely to preserve the codebase and maintain Docker image availability after the upstream project was deleted. I have no affiliation with the original StreamMaster project
+> - If you're interested in taking over maintenance, please [open a discussion](https://github.com/carlreid/StreamMaster/discussions)
+> - For actively developed alternatives, see the [Alternatives](#alternatives-) section below
+
+---
+
 <p align="center" width="100%">
     <img src="https://raw.githubusercontent.com/carlreid/StreamMaster/refs/heads/main/src/StreamMaster.WebUI/public/images/streammaster_logo.png" alt="StreamMaster Logo"/>
     <H1 align="center" width="100%">StreamMaster</H1>
