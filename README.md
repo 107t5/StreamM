@@ -1,10 +1,9 @@
 > [!WARNING]
->
-> **This fork is not actively maintained.**
+> **This project is no longer actively updated**
 > 
-> - This fork exists solely to preserve the codebase and maintain Docker image availability after the upstream project was deleted. I have no affiliation with the original StreamMaster project
-> - If you're interested in taking over maintenance, please [open a discussion](https://github.com/carlreid/StreamMaster/discussions)
-> - For actively developed alternatives, see the [Alternatives](#alternatives-) section below
+> - **Looking for alternatives?** Check the [Alternatives](#alternatives-) section below
+> - **Why this exists?** The [original project was deleted](#original-project-), so this copy exists to give users time to switch to other solutions and/or continue development
+> - **Wante to continue the development?** If you'd like to take ownership and maintain this project going forward, [please reach out](mailto:streammaster@carlreid.dk)
 
 ---
 
@@ -91,7 +90,7 @@ Like a box of chocolates, there are multiple flavours of self-hostable open sour
 
 ## Original Project 📝
 
-This repository is a fork of the original SenexCrenshaw/StreamMaster project, which was deleted in early 2025 for unknown reasons. The vast majority of the project was written and created by SenexCrenshaw, so all credit for the core functionality and design goes to SenexCrenshaw.
+This repository is a fork of the original SenexCrenshaw/StreamMaster project, which was deleted in early 2025 for unknown reasons. The vast majority of the project was written and created by [SenexCrenshaw](https://github.com/SenexCrenshaw), so all credit for the core functionality and design goes to [SenexCrenshaw](https://github.com/SenexCrenshaw).
 
 This fork aims to preserve the project and ensure its continued availability to the community. We've focused on maintaining compatibility for existing users while making necessary updates for current technologies and addressing security concerns. The project welcomes community contributions as we move forward with modest, targeted improvements.
 
