@@ -86,6 +86,7 @@ Like a box of chocolates, there are multiple flavours of self-hostable open sour
 
 - [tvheadend](https://github.com/tvheadend/tvheadend): TV streaming server for Linux with multiple input sources
 - [Threadfin](https://github.com/Threadfin/Threadfin): M3U proxy for Kernel/Plex/Jellyfin/Emby based on [xTeVe](https://github.com/xteve-project/xTeVe)
+- [m3u-editor](https://github.com/sparkison/m3u-editor): A full-featured and powerful IPTV editor, including features similar to xteve or threadfin
 - [Dispatcharr](https://github.com/Dispatcharr/Dispatcharr): IPTV stream and EPG data manager
 
 ## Original Project 📝
